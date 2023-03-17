@@ -26,7 +26,7 @@ export default function TableData() {
     handleData();
     // handlePromise("riddhi");
   }, []);
-  console.log(jsonData.slice(0, 10), "jsonData");
+  // console.log(jsonData.slice(0, 10), "jsonData");
   return (
     <>
       <Container>
@@ -71,6 +71,9 @@ export default function TableData() {
             alignItems: "center",
             justifyContent: "right",
             margin: 5,
+          }}
+          onChange={(aa, page) => {
+            console.log(aa, page);
           }}
         />
       </Container>
