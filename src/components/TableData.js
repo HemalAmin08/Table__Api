@@ -6,14 +6,14 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button, Container } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
-import { textAlign } from "@mui/system";
+// import { textAlign } from "@mui/system";
 
 export default function TableData() {
   const [jsonData, setJsonData] = useState([]);
-  // const limit = 10;
+  const [count, setCount] = useState(10);
 
   const handleData = () => {
     fetch(`https://jsonplaceholder.typicode.com/posts`)
@@ -27,6 +27,7 @@ export default function TableData() {
     // handlePromise("riddhi");
   }, []);
   // console.log(jsonData.slice(0, 10), "jsonData");
+  console.log(count - 10, count, "count");
   return (
     <>
       <Container>
@@ -41,7 +42,7 @@ export default function TableData() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {jsonData.slice(0, 10).map(({ id, title, body }) => (
+              {jsonData.slice(count - 10, count).map(({ id, title, body }) => (
                 <TableRow
                   key={id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -72,8 +73,9 @@ export default function TableData() {
             justifyContent: "right",
             margin: 5,
           }}
-          onChange={(aa, page) => {
-            console.log(aa, page);
+          onChange={(_, page) => {
+            // console.log(aa, page);
+            setCount(page * 10);
           }}
         />
       </Container>
