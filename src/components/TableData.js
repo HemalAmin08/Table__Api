@@ -7,7 +7,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
-import { Button, Container } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 // import { textAlign } from "@mui/system";
 
@@ -18,16 +26,14 @@ export default function TableData() {
   const handleData = () => {
     fetch(`https://jsonplaceholder.typicode.com/posts`)
       .then((response) => response.json())
-      // .then((json) => json.map(({ id }) => id))
       .then((data) => setJsonData(data));
   };
 
   useEffect(() => {
     handleData();
-    // handlePromise("riddhi");
   }, []);
   // console.log(jsonData.slice(0, 10), "jsonData");
-  console.log(count - 10, count, "count");
+  // console.log(count - 10, count, "count");
   return (
     <>
       <Container>
@@ -64,20 +70,39 @@ export default function TableData() {
             </TableBody>
           </Table>
         </TableContainer>
-        <Pagination
-          count={Math.ceil(jsonData.length / 10)}
-          color="primary"
+        <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "right",
+            justifyContent: "space-between",
             margin: 5,
           }}
-          onChange={(_, page) => {
-            // console.log(aa, page);
-            setCount(page * 10);
-          }}
-        />
+        >
+          <FormControl sx={{ minWidth: 120 }}>
+            <InputLabel id="demo-simple-select-label">Range</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              // value={age}
+              label="Age"
+              onChange={(event, child) => {
+                // console.log(event, "====", child);
+              }}
+            >
+              <MenuItem value={10}>10</MenuItem>
+              <MenuItem value={20}>20</MenuItem>
+              <MenuItem value={30}>30</MenuItem>
+            </Select>
+          </FormControl>
+
+          <Pagination
+            count={Math.ceil(jsonData.length / 10)}
+            color="primary"
+            onChange={(_, page) => {
+              setCount(page * 10);
+            }}
+          />
+        </Box>
       </Container>
     </>
   );
