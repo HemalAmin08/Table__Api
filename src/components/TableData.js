@@ -22,6 +22,10 @@ import Pagination from "@mui/material/Pagination";
 export default function TableData() {
   const [jsonData, setJsonData] = useState([]);
   const [count, setCount] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const initialValue = limit * currentPage - limit;
+  const initialRange = limit * currentPage;
 
   const handleData = () => {
     fetch(`https://jsonplaceholder.typicode.com/posts`)
@@ -29,11 +33,20 @@ export default function TableData() {
       .then((data) => setJsonData(data));
   };
 
+  const handleChange = (e) => {
+    // console.log(e.target.value);
+    setLimit(e.target.value);
+  };
+
   useEffect(() => {
     handleData();
   }, []);
+  // console.log(currentPage)
   // console.log(jsonData.slice(0, 10), "jsonData");
   // console.log(count - 10, count, "count");
+  // console.log(limit , "lll")
+  console.log(initialValue, "iv");
+  console.log(initialRange, "rr");
   return (
     <>
       <Container>
@@ -48,25 +61,27 @@ export default function TableData() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {jsonData.slice(count - 10, count).map(({ id, title, body }) => (
-                <TableRow
-                  key={id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {id}
-                  </TableCell>
-                  <TableCell component="th" scope="row">
-                    {title}
-                  </TableCell>
-                  <TableCell align="left">{body}</TableCell>
-                  <TableCell>
-                    <Link to={`/viewData/${id}`}>
-                      <Button variant="contained">View</Button>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {jsonData
+                .slice(initialValue, initialRange)
+                .map(({ id, title, body }) => (
+                  <TableRow
+                    key={id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {id}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      {title}
+                    </TableCell>
+                    <TableCell align="left">{body}</TableCell>
+                    <TableCell>
+                      <Link to={`/viewData/${id}`}>
+                        <Button variant="contained">View</Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -83,11 +98,9 @@ export default function TableData() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              // value={age}
-              label="Age"
-              onChange={(event, child) => {
-                // console.log(event, "====", child);
-              }}
+              label="Range"
+              value={limit}
+              onChange={handleChange}
             >
               <MenuItem value={10}>10</MenuItem>
               <MenuItem value={20}>20</MenuItem>
@@ -96,9 +109,10 @@ export default function TableData() {
           </FormControl>
 
           <Pagination
-            count={Math.ceil(jsonData.length / 10)}
+            count={Math.ceil(jsonData.length / limit)}
             color="primary"
             onChange={(_, page) => {
+              setCurrentPage(page);
               setCount(page * 10);
             }}
           />
