@@ -45,8 +45,8 @@ export default function TableData() {
   // console.log(jsonData.slice(0, 10), "jsonData");
   // console.log(count - 10, count, "count");
   // console.log(limit , "lll")
-  console.log(initialValue, "iv");
-  console.log(initialRange, "rr");
+  // console.log(initialValue, "iv");
+  // console.log(initialRange, "rr");
   return (
     <>
       <Container>
